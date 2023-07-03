@@ -1,19 +1,35 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from "react-dom/client";
+import {Provider} from 'react-redux';
+import {QueryClient, QueryClientProvider} from 'react-query';
+import {ReactQueryDevtools} from 'react-query/devtools';
+import store from './store';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index.css';
+import {createTheme} from "./theme";
+import {ThemeProvider} from "@mui/material";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const queryClient = new QueryClient();
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const rootElement = document.getElementById("root");
+
+const theme = createTheme();
+
+if (rootElement) {
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <ThemeProvider theme={theme}>
+                        <App/>
+                        {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false}/>}
+                    </ThemeProvider>
+                </QueryClientProvider>
+            </Provider>
+        </React.StrictMode>
+    );
+
+} else {
+    throw new Error("Could not find root element");
+}
