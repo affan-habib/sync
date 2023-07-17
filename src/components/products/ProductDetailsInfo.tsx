@@ -1,9 +1,9 @@
 import { Card, CardHeader, Grid, Typography, Box, Button } from "@mui/material";
-import { Product } from '../../types';
+import { ProductType } from '../../types';
 import React from "react";
 
 interface ProductDetailsInfoProps {
-    product: Product;
+    product: ProductType;
 }
 
 export const ProductDetailsInfo: React.FC<ProductDetailsInfoProps> = ({ product }) => {

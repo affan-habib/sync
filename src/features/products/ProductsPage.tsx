@@ -1,5 +1,5 @@
-import React, {useCallback, useMemo, useState, useEffect} from "react";
-import {useDispatch} from 'react-redux';
+import React, {useState, useMemo, useEffect} from "react";
+import {useDispatch} from "react-redux";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
 import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
@@ -14,87 +14,62 @@ import {
     Skeleton,
 } from "@mui/material";
 import {DashboardLayout} from "../../components/layouts/DashboardLayout";
-import {ProductsTable} from "../../components/products/ProductsTable";
 import {ProductsSearch} from "../../components/products/ProductsSearch";
-import {applyPagination} from "../../utils/ApplyPagination";
 import {ProductOverview} from "../../components/products/ProductOverview";
 import {ProductDetailsInfo} from "../../components/products/ProductDetailsInfo";
 import {ProductVideo} from "../../components/products/ProductVideo";
 import {ProductReviews} from "../../components/products/ProductReviews";
 import {ProductFormModal} from "../../components/products/ProductFormModal";
-import {useProductsQuery} from '../../hooks/useProductsQuery';
-import {getProductsStart, getProductsSuccess, getProductsFailure} from './productsSlice';
-
-
-const useProducts = (page: number, rowsPerPage: number, data: any[]) => {
-    return useMemo(() => {
-        return applyPagination(data, page, rowsPerPage);
-    }, [page, rowsPerPage, data]);
-};
-
-const useProductIds = (products: any[]) => {
-    return useMemo(() => {
-        return products.map((product) => product.id);
-    }, [products]);
-};
+import {useProductsQuery} from "../../hooks/useProductsQuery";
+import {
+    getProductsStart,
+    getProductsSuccess,
+    getProductsFailure,
+} from "./productsSlice";
+import ReactTable from "../../components/tables/ReactTable";
+import {ProductsColumns} from "./productsColumns";
+import {ProductType} from "../../types";
 
 const ProductsPage: React.FC = () => {
     const dispatch = useDispatch();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [activeTab, setActiveTab] = useState(0);
+    const [searchResults, setSearchResults] = useState<ProductType[]>([]);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+
     const {
         data,
         isLoading,
-        error
-    } = useProductsQuery();
+        error,
+        isFetching
+    } = useProductsQuery(currentPage, rowsPerPage, searchTerm);
 
     useEffect(() => {
-        dispatch(getProductsStart());
+        if (!isFetching) {
+            dispatch(getProductsStart());
 
-        if (data) {
-            dispatch(getProductsSuccess(data));
+            if (data) {
+                const filteredData = data.data.filter(
+                    product => product.isActive === (activeTab === 0)
+                );
+                setSearchResults(filteredData);
+                dispatch(getProductsSuccess(filteredData));
+            }
+
+            if (error) {
+                dispatch(getProductsFailure(error.toString()));
+            }
         }
-
-        if (error) {
-            dispatch(getProductsFailure(error.toString()));
-        }
-    }, [data, error, isLoading, dispatch]);
-
+    }, [data, error, isFetching, dispatch, activeTab]);
 
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState(0);
 
-    useEffect(() => {
-        console.log("data", data);
-    }, [data]);
+    const columns = useMemo(() => ProductsColumns, []);
 
-    const products = useProducts(
-        page,
-        rowsPerPage,
-        searchResults.length > 0
-            ? searchResults
-            : data
-                ? data.filter((product: any) => product.isActive === (activeTab === 0))
-                : []
-    );
-
-
-    useEffect(() => {
-        console.log("products", products);
-    }, [products]);
-
-    // const productIds = useProductIds(products);
-    // const productSelection = useSelection(productIds);
-
-    const handlePageChange = useCallback((event: unknown, newPage: number) => {
-        setPage(newPage);
-    }, []);
-
-    const handleRowsPerPageChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(Number(event.target.value));
-    }, []);
+    const products = data?.data || [];
 
     const handleDrawerClose = () => {
         setSelectedProduct(null);
@@ -111,6 +86,21 @@ const ProductsPage: React.FC = () => {
     const handleCloseAddModal = () => {
         setIsAddModalOpen(false);
     };
+
+    const handleSearch = (term: string) => {
+        console.log("searching...", term);
+        setSearchTerm(term);
+        setCurrentPage(1);
+    };
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    }
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setCurrentPage(1);
+    }
 
     return (
         <DashboardLayout>
@@ -177,11 +167,11 @@ const ProductsPage: React.FC = () => {
                             </div>
                         </Stack>
                         <ProductsSearch
-                            data={products}
-                            setSearchResults={setSearchResults}
+                            onSearch={handleSearch}
                             activeTab={activeTab}
                             setActiveTab={setActiveTab}
                         />
+
                         {isLoading ? (
                             Array.from(new Array(3)).map((_, index) => (
                                 <Box key={index}>
@@ -189,28 +179,32 @@ const ProductsPage: React.FC = () => {
                                 </Box>
                             ))
                         ) : (
-                            <ProductsTable
-                                count={searchResults.length > 0 ? searchResults.length : products.length}
-                                items={products}
-                                onPageChange={handlePageChange}
-                                onRowsPerPageChange={handleRowsPerPageChange}
-                                page={page}
-                                rowsPerPage={rowsPerPage}
-                                onProductClick={(product) => handleProductClick(product)}
+                            <ReactTable data={products} columns={columns} onPageChange={handlePageChange}
+                                        rowsPerPage={rowsPerPage} onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        totalCount={data?.meta.total || 0}
+                                        currentPage={data?.meta.current_page || 0}
                             />
                         )}
-                        <Drawer anchor="right" open={!!selectedProduct} onClose={handleDrawerClose}>
+                        <Drawer
+                            anchor="right"
+                            open={!!selectedProduct}
+                            onClose={handleDrawerClose}
+                        >
                             {selectedProduct && (
-                                <Box sx={{
-                                    width: 500,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    height: "100%"
-                                }}>
-                                    <Box sx={{
-                                        p: 2,
-                                        overflowY: "auto"
-                                    }}>
+                                <Box
+                                    sx={{
+                                        width: 500,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        height: "100%",
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            p: 2,
+                                            overflowY: "auto",
+                                        }}
+                                    >
                                         <Box mb={2}>
                                             <ProductOverview product={selectedProduct}/>
                                         </Box>
@@ -226,12 +220,14 @@ const ProductsPage: React.FC = () => {
                                             </Box>
                                         )}
                                     </Box>
-                                    <Box sx={{
-                                        p: 2,
-                                        position: "sticky",
-                                        bottom: 0,
-                                        backgroundColor: "#fff"
-                                    }}>
+                                    <Box
+                                        sx={{
+                                            p: 2,
+                                            position: "sticky",
+                                            bottom: 0,
+                                            backgroundColor: "#fff",
+                                        }}
+                                    >
                                         <Button fullWidth variant="contained" color="primary">
                                             Edit
                                         </Button>
@@ -240,7 +236,10 @@ const ProductsPage: React.FC = () => {
                             )}
                         </Drawer>
 
-                        <ProductFormModal open={isAddModalOpen} onClose={handleCloseAddModal}/>
+                        <ProductFormModal
+                            open={isAddModalOpen}
+                            onClose={handleCloseAddModal}
+                        />
                     </Stack>
                 </Container>
             </Box>

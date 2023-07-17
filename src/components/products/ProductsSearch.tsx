@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import {
     Box,
@@ -9,33 +9,30 @@ import {
     OutlinedInput,
     SvgIcon,
 } from "@mui/material";
-import {Product} from '../../types';
+import debounce from 'lodash.debounce';
 
 interface Props {
-    data: Product[],
-    setSearchResults: (results: Product[]) => void,
+    onSearch: (value: string) => void,
     activeTab: number,
     setActiveTab: (value: number) => void,
 }
 
 export const ProductsSearch: React.FC<Props> = ({
-                                             data,
-                                             setSearchResults,
-                                             activeTab,
-                                             setActiveTab
-                                         }) => {
+                                                    onSearch,
+                                                    activeTab,
+                                                    setActiveTab
+                                                }) => {
     const [searchTerm, setSearchTerm] = useState("");
+    const debouncedSearchTerm = useRef(debounce(onSearch, 500));
 
     useEffect(() => {
-        if (searchTerm !== "") {
-            const results = data.filter(
-                (product) =>
-                    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    product.vendor.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setSearchResults(results);
-        }
-    }, [data, searchTerm, setSearchResults]);
+        debouncedSearchTerm.current(searchTerm);
+
+        return () => {
+            debouncedSearchTerm.current.cancel();
+        };
+    }, [searchTerm]);
+
 
     const handleTabChange = (newValue: number) => {
         setActiveTab(newValue);

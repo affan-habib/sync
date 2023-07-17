@@ -1,9 +1,9 @@
 import { Card, CardHeader, List, ListItem, ListItemText, Rating } from '@mui/material';
-import {Product} from "../../types";
+import {ProductType} from "../../types";
 import React from "react";
 
 interface ProductReviewsProps {
-    product: Product;
+    product: ProductType;
 }
 export const ProductReviews: React.FC<ProductReviewsProps> = ({product}) => {
     // TODO: implement this

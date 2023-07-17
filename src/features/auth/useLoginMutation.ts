@@ -3,7 +3,7 @@ import axios from "axios";
 import {login} from "./authSlice";
 import {useAppDispatch} from "../../store";
 import {apiBaseUrl} from "../../config";
-import {User} from "../../types";
+import {UserType} from "../../types";
 import {useNavigate} from "react-router-dom";
 
 interface Authorization {
@@ -13,7 +13,7 @@ interface Authorization {
 
 interface LoginResponse {
     status: string;
-    user: User;
+    user: UserType;
     authorisation: Authorization;
 }
 

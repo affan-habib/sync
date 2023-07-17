@@ -1,9 +1,9 @@
 import {Card, Box, Button} from '@mui/material';
-import {Product} from '../../types';
+import {ProductType} from '../../types';
 import React from "react";
 
 interface ProductVideoProps {
-    product: Product;
+    product: ProductType;
 }
 
 export const ProductVideo: React.FC<ProductVideoProps> = ({product}) => {

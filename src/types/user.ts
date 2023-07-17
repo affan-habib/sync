@@ -1,4 +1,4 @@
-export interface User {
+export interface UserType {
     id: number;
     full_name: string;
     display_name: string;

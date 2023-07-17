@@ -25,16 +25,16 @@ import {
 } from "@heroicons/react/24/outline/index";
 import XCircleIcon from "@heroicons/react/24/outline/XCircleIcon";
 import React, { useState } from 'react';
-import {Product} from "../../types";
+import {ProductType} from "../../types";
 
 interface Props {
     count?: number,
-    items?: Product[],
+    items?: ProductType[],
     onPageChange?: (event: unknown, newPage: number) => void,
     onRowsPerPageChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
     page?: number,
     rowsPerPage?: number,
-    onProductClick?: (product: Product) => void,
+    onProductClick?: (product: ProductType) => void,
 }
 
 export const ProductsTable: React.FC<Props> = ({
@@ -44,13 +44,13 @@ export const ProductsTable: React.FC<Props> = ({
                                             onRowsPerPageChange,
                                             page = 0,
                                             rowsPerPage = 0,
-                                            onProductClick = (product: Product) => {}
+                                            onProductClick = (product: ProductType) => {}
                                         }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null);
 
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>, product: Product) => {
+    const handleClick = (event: React.MouseEvent<HTMLElement>, product: ProductType) => {
         setAnchorEl(event.currentTarget);
         setSelectedProduct(product);
     };

@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Card, CardMedia, CardContent, Typography, Box, Chip } from '@mui/material';
-import { Product } from '../../types';
+import { ProductType } from '../../types';
 
 interface ProductOverviewProps {
-    product: Product;
+    product: ProductType;
 }
 
 export const ProductOverview: FC<ProductOverviewProps> = ({ product }) => {

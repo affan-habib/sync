@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../siin-marketplace-vendor-frontend-ts.iml" filepath="$PROJECT_DIR$/../siin-marketplace-vendor-frontend-ts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/siin-marketplace-vendor-frontend.iml" filepath="$PROJECT_DIR$/.idea/siin-marketplace-vendor-frontend.iml" />
     </modules>
   </component>
 </project>
