@@ -1,5 +1,5 @@
-import {UserType} from './user';
-import {ProductType} from "./product";
-import {TableColumnType} from "./table";
+import { ProductFormData, ProductType } from "./product";
+import { TableColumnType } from "./table";
+import { UserType } from "./user";
 
-export type {UserType, ProductType, TableColumnType};
+export type { ProductFormData, ProductType, TableColumnType, UserType };
