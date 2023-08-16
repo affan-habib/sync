@@ -17,14 +17,13 @@ import {
 } from "@mui/material";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { Dropzone } from "../common/Dropzone";
 import {
   createProduct,
   presign,
   saveMedia,
   uploadPresignedFile,
-} from "../api/products";
+} from "../../api/products/productsAPI";
 import { ProductFormData } from "../../types";
 
 const categories = ["Makeup", "Skin", "Hair", "Bath & Body"];
