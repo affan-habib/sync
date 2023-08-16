@@ -14,7 +14,7 @@ interface Authorization {
 interface LoginResponse {
   status: string;
   user: UserType;
-  authorization: Authorization;
+  authorisation: Authorization;
 }
 
 interface LoginData {
@@ -34,7 +34,7 @@ export const useLoginMutation = () => {
     {
       onSuccess: (data: LoginResponse) => {
         dispatch(login({ email: data.user.email }));
-        localStorage.setItem("token", data.authorization.token);
+        localStorage.setItem("token", data.authorisation.token);
         navigate("/");
       },
     }
