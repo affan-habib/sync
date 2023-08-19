@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { DashboardLayout } from "../../components/layouts/DashboardLayout";
 import ReactTable from "../../components/tables/ReactTable";
 import { ColumnDef } from "@tanstack/react-table";
-import { Container } from "@mui/material";
-import axios from "axios"; // Import Axios for API calls
+import { Container, Chip } from "@mui/material"; // Import Chip component
+import axios from "axios";
 
 const SalesPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,6 +33,26 @@ const SalesPage: React.FC = () => {
   const startIndex = (currentPage - 1) * rowsPerPage;
   const visibleOrders = orders.slice(startIndex, startIndex + rowsPerPage);
 
+  const getStatusChipStyle = (status: string) => {
+    let backgroundColor = "";
+    switch (status) {
+      case "pending":
+        backgroundColor = "yellow";
+        break;
+      case "processing":
+        backgroundColor = "orange";
+        break;
+      // Add more cases for other status colors
+      default:
+        backgroundColor = "white"; // Default color if no match found
+    }
+
+    return {
+      backgroundColor,
+      color: "white", // Set text color for better contrast
+    };
+  };
+
   const columns: ColumnDef<any, any>[] = [
     {
       header: "Order Number",
@@ -44,10 +64,36 @@ const SalesPage: React.FC = () => {
     },
     {
       header: "Total Amount",
-      cell: (cell) => `$${cell.row.original.total_amount}`,
+      cell: (cell) => (
+        <div>
+          <span>{cell.row.original.currency}</span>
+          <span style={{ marginLeft: "4px" }}>{`${cell.row.original.total_amount}`}</span>
+        </div>
+      ),
     },
-    // You can add more columns for other details if needed
+    {
+      header: "Status",
+      cell: (cell) => (
+        <Chip
+          label={cell.row.original.status}
+          variant="outlined"
+          color={
+            cell.row.original.status === "pending"
+              ? "warning"
+              : cell.row.original.status === "processing"
+              ? "info"
+              : "default"
+          }
+        />
+      ),
+    },
+    {
+      header: "Payment Method",
+      cell: (cell) => cell.row.original.payment_method,
+    },
+    // ... other columns
   ];
+
 
   return (
     <DashboardLayout>
