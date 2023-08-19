@@ -41,7 +41,7 @@ export const SalesColumns: ColumnDef<any, any>[] = [
     header: "Payment Method",
     cell: (cell) => (
       <Chip
-        label={cell.row.original.payment_method}
+        label={cell.row.original.payment_method.toUpperCase()}
         variant="filled"
         color={
           cell.row.original.payment_method === "wallet"
