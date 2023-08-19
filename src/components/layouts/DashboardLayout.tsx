@@ -20,7 +20,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import {items} from "./config";
 import Logo from "../common/Logo";
-
+import {useNavigate} from 'react-router-dom'
 
 const drawerWidth = 240;
 
@@ -100,7 +100,7 @@ interface DashboardLayoutProps {
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({children}) => {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-
+    const navigate = useNavigate();
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -137,7 +137,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({children}) => {
                 <Divider />
                 <List>
                     {items.map((item, index) => (
-                        <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+                        <ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={() => navigate(item.path)}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
