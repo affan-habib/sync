@@ -25,7 +25,7 @@ export const SalesColumns: ColumnDef<any, any>[] = [
     header: "Status",
     cell: (cell) => (
       <Chip
-        label={cell.row.original.status}
+        label={cell.row.original.status.toUpperCase()}
         variant="outlined"
         color={
           cell.row.original.status === "pending"
@@ -39,7 +39,24 @@ export const SalesColumns: ColumnDef<any, any>[] = [
   },
   {
     header: "Payment Method",
-    cell: (cell) => cell.row.original.payment_method,
+    cell: (cell) => (
+      <Chip
+        label={cell.row.original.payment_method}
+        variant="filled"
+        color={
+          cell.row.original.payment_method === "wallet"
+            ? "primary"
+            : cell.row.original.payment_method === "CreditCard"
+            ? "success"
+            : cell.row.original.payment_method === "Benefit"
+            ? "info"
+            : cell.row.original.payment_method === "cash"
+            ? "error"
+            : "warning"
+        }
+     
+      />
+    ),
   },
   // ... other columns
 ];
