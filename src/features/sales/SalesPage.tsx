@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { DashboardLayout } from "../../components/layouts/DashboardLayout";
 import ReactTable from "../../components/tables/ReactTable";
-import { ColumnDef } from "@tanstack/react-table";
-import { Container, Chip } from "@mui/material"; // Import Chip component
+import { Container } from "@mui/material";
 import axios from "axios";
+import { SalesColumns } from "./SalesColumns";
+import { useSalesQuery } from "../../hooks/useSalesQuery";
 
 const SalesPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const [totalPages, setTotalPages] = useState(0);
-  const [orders, setOrders] = useState<any[]>([]); // Using 'any' type for orders
+  const [orders, setOrders] = useState<any[]>([]);
+  const columns = useMemo(() => SalesColumns, []);
 
   useEffect(() => {
     fetchOrders(currentPage, rowsPerPage);
@@ -17,16 +19,21 @@ const SalesPage: React.FC = () => {
 
   const fetchOrders = (page: number, perPage: number) => {
     axios
-      .get(`https://apps.syyn.shop/api/admin/orders/list?page=${page}&per_page=${perPage}`)
-      .then(response => {
+      .get(
+        `https://apps.syyn.shop/api/admin/orders/list?page=${page}&per_page=${perPage}`
+      )
+      .then((response) => {
         setOrders(response.data.data);
-        setTotalPages(response.data.last_page);
+        setTotalPages(response.data.total);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching orders:", error);
       });
   };
-
+  const { data, isLoading, error, isFetching } = useSalesQuery(
+    currentPage,
+    rowsPerPage
+  );
   const onPageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -36,61 +43,26 @@ const SalesPage: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const columns: ColumnDef<any, any>[] = [
-    {
-      header: "Order Number",
-      cell: (cell) => cell.row.original.id,
-    },
-    {
-      header: "Customer Name",
-      cell: (cell) => cell.row.original.user.full_name,
-    },
-    {
-      header: "Total Amount",
-      cell: (cell) => (
-        <div>
-          <span>{cell.row.original.currency}</span>
-          <span style={{ marginLeft: "4px" }}>{`${cell.row.original.total_amount}`}</span>
-        </div>
-      ),
-    },
-    {
-      header: "Status",
-      cell: (cell) => (
-        <Chip
-          label={cell.row.original.status}
-          variant="outlined"
-          color={
-            cell.row.original.status === "pending"
-              ? "warning"
-              : cell.row.original.status === "processing"
-              ? "info"
-              : "default"
-          }
-        />
-      ),
-    },
-    {
-      header: "Payment Method",
-      cell: (cell) => cell.row.original.payment_method,
-    },
-    // ... other columns
-  ];
-
   return (
     <DashboardLayout>
       <Container maxWidth="xl">
         <div>
           <h1 style={{ marginBottom: 20 }}>List of Orders</h1>
-          <ReactTable
-            columns={columns}
-            data={orders}
-            onPageChange={onPageChange}
-            rowsPerPage={rowsPerPage}
-            totalCount={totalPages * rowsPerPage}
-            currentPage={currentPage}
-            onChangeRowsPerPage={onChangeRowsPerPage}
-          />
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : error ? (
+            <p>Error fetching orders: {error.message}</p>
+          ) : (
+            <ReactTable
+              columns={columns}
+              data={data}
+              onPageChange={onPageChange}
+              rowsPerPage={rowsPerPage}
+              totalCount={data?.length || 0}
+              currentPage={currentPage}
+              onChangeRowsPerPage={onChangeRowsPerPage}
+            />
+          )}
         </div>
       </Container>
     </DashboardLayout>
