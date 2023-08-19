@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { DashboardLayout } from "../../components/layouts/DashboardLayout";
 import ReactTable from "../../components/tables/ReactTable";
-import { Container } from "@mui/material";
+import { Container, Skeleton } from "@mui/material";
 import { SalesColumns } from "./SalesColumns";
 import { useSalesQuery } from "../../hooks/useSalesQuery";
 
@@ -22,27 +22,32 @@ const SalesPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <Container maxWidth="xl">
-        <div>
-          <h1 style={{ marginBottom: 20 }}>List of Orders</h1>
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p>Error fetching orders: {error.toString()}</p>
-          ) : (
-            <ReactTable
-              columns={columns}
-              data={data?.data}
-              onPageChange={onPageChange}
-              rowsPerPage={rowsPerPage}
-              totalCount={data?.total}
-              currentPage={currentPage}
-              onChangeRowsPerPage={onChangeRowsPerPage}
-            />
-          )}
-        </div>
-      </Container>
-    </DashboardLayout>
+    <Container maxWidth="xl">
+      <div>
+        <h1 style={{ marginBottom: 20 }}>List of Orders</h1>
+        {isLoading ? (
+          // Display Skeleton rows while loading
+          <>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <Skeleton key={index} height={100} style={{ marginBottom: 5 }} />
+            ))}
+          </>
+        ) : error ? (
+          <p>Error fetching orders: {error.toString()}</p>
+        ) : (
+          <ReactTable
+            columns={columns}
+            data={data?.data}
+            onPageChange={onPageChange}
+            rowsPerPage={rowsPerPage}
+            totalCount={data?.total}
+            currentPage={currentPage}
+            onChangeRowsPerPage={onChangeRowsPerPage}
+          />
+        )}
+      </div>
+    </Container>
+  </DashboardLayout>
   );
 };
 
