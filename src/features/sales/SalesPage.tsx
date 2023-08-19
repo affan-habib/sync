@@ -22,32 +22,36 @@ const SalesPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-    <Container maxWidth="xl">
-      <div>
-        <h1 style={{ marginBottom: 20 }}>List of Orders</h1>
-        {isLoading ? (
-          // Display Skeleton rows while loading
-          <>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <Skeleton key={index} height={100} style={{ marginBottom: 5 }} />
-            ))}
-          </>
-        ) : error ? (
-          <p>Error fetching orders: {error.toString()}</p>
-        ) : (
-          <ReactTable
-            columns={columns}
-            data={data?.data}
-            onPageChange={onPageChange}
-            rowsPerPage={rowsPerPage}
-            totalCount={data?.total}
-            currentPage={currentPage}
-            onChangeRowsPerPage={onChangeRowsPerPage}
-          />
-        )}
-      </div>
-    </Container>
-  </DashboardLayout>
+      <Container maxWidth="xl">
+        <div>
+          <h1 style={{ marginTop: 60, marginBottom: 20 }}>List of Orders</h1>
+          {isLoading ? (
+            // Display Skeleton rows while loading
+            <>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <Skeleton
+                  key={index}
+                  height={100}
+                  style={{ marginBottom: 5 }}
+                />
+              ))}
+            </>
+          ) : error ? (
+            <p>Error fetching orders: {error.toString()}</p>
+          ) : (
+            <ReactTable
+              columns={columns}
+              data={data?.data}
+              onPageChange={onPageChange}
+              rowsPerPage={rowsPerPage}
+              totalCount={data?.total}
+              currentPage={currentPage}
+              onChangeRowsPerPage={onChangeRowsPerPage}
+            />
+          )}
+        </div>
+      </Container>
+    </DashboardLayout>
   );
 };
 

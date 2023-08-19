@@ -10,17 +10,7 @@ export const SalesColumns: ColumnDef<any, any>[] = [
     header: "Customer Name",
     cell: (cell) => cell.row.original.user.full_name,
   },
-  {
-    header: "Total Amount",
-    cell: (cell) => (
-      <div>
-        <span>{cell.row.original.currency}</span>
-        <span
-          style={{ marginLeft: "4px" }}
-        >{`${cell.row.original.total_amount}`}</span>
-      </div>
-    ),
-  },
+
   {
     header: "Status",
     cell: (cell) => (
@@ -54,9 +44,22 @@ export const SalesColumns: ColumnDef<any, any>[] = [
             ? "error"
             : "warning"
         }
-     
       />
     ),
   },
-  // ... other columns
+  {
+    header: "Mobile Num",
+    cell: (cell) => cell.row.original.address.phone_number,
+  },
+  {
+    header: "Total Amount",
+    cell: (cell) => (
+      <div>
+        <span>{cell.row.original.currency}</span>
+        <span
+          style={{ marginLeft: "4px" }}
+        >{`${cell.row.original.total_amount}`}</span>
+      </div>
+    ),
+  },
 ];
