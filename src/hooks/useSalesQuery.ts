@@ -5,7 +5,7 @@ const fetchSales = async (page: number, perPage: number) => {
   const response = await axios.get(
     `https://apps.syyn.shop/api/admin/orders/list?page=${page}&per_page=${perPage}`
   );
-  return response.data.data;
+  return response.data;
 };
 
 export const useSalesQuery = (currentPage: number, rowsPerPage: number) => {
