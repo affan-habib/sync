@@ -38,17 +38,17 @@ const SalesPage: React.FC = () => {
             </>
           ) : error ? (
             <p>Error fetching orders: {error.toString()}</p>
-          ) : (
+          ) : data ? ( // Only render if data is defined
             <ReactTable
               columns={columns}
-              data={data?.data}
+              data={data.data}
               onPageChange={onPageChange}
               rowsPerPage={rowsPerPage}
-              totalCount={data?.total}
+              totalCount={data.total}
               currentPage={currentPage}
               onChangeRowsPerPage={onChangeRowsPerPage}
             />
-          )}
+          ) : null}
         </div>
       </Container>
     </DashboardLayout>
