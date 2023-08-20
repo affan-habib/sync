@@ -2,13 +2,13 @@ import React, { useState, useMemo } from "react";
 import { DashboardLayout } from "../../components/layouts/DashboardLayout";
 import ReactTable from "../../components/tables/ReactTable";
 import { Container, Skeleton } from "@mui/material";
-import { SalesColumns } from "./SalesColumns";
+import { OrdersColumns } from "./OrdersColumns";
 import { useSalesQuery } from "../../hooks/useSalesQuery";
 
 const OrdersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
-  const columns = useMemo(() => SalesColumns, []);
+  const columns = useMemo(() => OrdersColumns, []);
 
   const { data, isLoading, error } = useSalesQuery(currentPage, rowsPerPage);
   const onPageChange = (page: number) => {

@@ -1,7 +1,7 @@
 import { Button, Chip } from "@mui/material";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const SalesColumns: ColumnDef<any, any>[] = [
+export const OrdersColumns: ColumnDef<any, any>[] = [
   {
     header: "Order Number",
     cell: (cell) => cell.row.original.id,
