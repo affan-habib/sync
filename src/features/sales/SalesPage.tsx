@@ -24,7 +24,7 @@ const SalesPage: React.FC = () => {
     <DashboardLayout>
       <Container maxWidth="xl">
         <div>
-          <h1 style={{ marginTop: 60, marginBottom: 20 }}>List of Orders</h1>
+          <h1 style={{ marginTop: 60, marginBottom: 20 }}>Orders</h1>
           {isLoading ? (
             // Display Skeleton rows while loading
             <>
