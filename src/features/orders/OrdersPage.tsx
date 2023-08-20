@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
-import { DashboardLayout } from "../../components/layouts/DashboardLayout";
-import ReactTable from "../../components/tables/ReactTable";
+import { DashboardLayout } from "components/layouts/DashboardLayout";
+import ReactTable from "components/tables/ReactTable";
 import { Container, Skeleton } from "@mui/material";
 import { OrdersColumns } from "./OrdersColumns";
-import { useSalesQuery } from "../../hooks/useSalesQuery";
+import { useSalesQuery } from "hooks/useSalesQuery";
 
 const OrdersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -3,10 +3,10 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "../components/common/PrivateRoute";
 
-const LoginPage = lazy(() => import("../features/auth/LoginPage"));
-const ProductsPage = lazy(() => import("../features/products/ProductsPage"));
-const OrdersPage = lazy(() => import("../features/orders/OrdersPage"));
-const Dashboard = lazy(() => import("../features/dashboard/Dashboard"));
+const LoginPage = lazy(() => import("features/auth/LoginPage"));
+const ProductsPage = lazy(() => import("features/products/ProductsPage"));
+const OrdersPage = lazy(() => import("features/orders/OrdersPage"));
+const Dashboard = lazy(() => import("features/dashboard/Dashboard"));
 
 const AppRoutes: React.FC = () => {
   return (
