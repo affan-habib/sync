@@ -11,7 +11,7 @@ const fetchSales = async (page: number, perPage: number): Promise<OrderDataRespo
   return response.data;
 };
 
-export const useSalesQuery = (
+export const useOrdersQuery = (
   currentPage: number,
   rowsPerPage: number
 ): UseQueryResult<OrderDataResponse> => {

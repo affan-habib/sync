@@ -61,7 +61,7 @@ export const OrdersColumns: ColumnDef<any, any>[] = [
             : cell.row.original.payment_method === "Benefit"
             ? "info"
             : cell.row.original.payment_method === "cash"
-            ? "error"
+            ? "info"
             : "warning"
         }
       />
