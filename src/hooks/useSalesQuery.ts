@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from "react-query";
 import axios from "axios";
-import { OrderDataResponse } from "../types/order";
-import { apiBaseUrl } from "../config";
+import { OrderDataResponse } from "types/order";
+import { apiBaseUrl } from "config";
 
 
 const fetchSales = async (page: number, perPage: number): Promise<OrderDataResponse> => {
