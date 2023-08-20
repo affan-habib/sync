@@ -1,11 +1,12 @@
 // Routes.tsx
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import LoginPage from "../features/auth/LoginPage";
-import ProductsPage from "../features/products/ProductsPage";
 import PrivateRoute from "../components/common/PrivateRoute";
-import OrdersPage from "../features/orders/OrdersPage";
-import Dashboard from "../features/dashboard/Dashboard";
+
+const LoginPage = lazy(() => import("../features/auth/LoginPage"));
+const ProductsPage = lazy(() => import("../features/products/ProductsPage"));
+const OrdersPage = lazy(() => import("../features/orders/OrdersPage"));
+const Dashboard = lazy(() => import("../features/dashboard/Dashboard"));
 
 const AppRoutes: React.FC = () => {
   return (
@@ -39,4 +40,12 @@ const AppRoutes: React.FC = () => {
   );
 };
 
-export default AppRoutes;
+const LazyRoutes: React.FC = () => {
+  return (
+    <Suspense fallback={<></>}>
+      <AppRoutes />
+    </Suspense>
+  );
+};
+
+export default LazyRoutes;
