@@ -19,8 +19,8 @@ export const items: Item[] = [
         )
     },
     {
-        title: 'Sales Order',
-        path: '/sales',
+        title: 'Sales Orders',
+        path: '/orders',
         icon: (
             <SvgIcon fontSize="small">
                 <ShoppingCartCheckoutIcon/>

@@ -5,7 +5,7 @@ import { Container, Skeleton } from "@mui/material";
 import { SalesColumns } from "./SalesColumns";
 import { useSalesQuery } from "../../hooks/useSalesQuery";
 
-const SalesPage: React.FC = () => {
+const OrdersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const columns = useMemo(() => SalesColumns, []);
@@ -55,4 +55,4 @@ const SalesPage: React.FC = () => {
   );
 };
 
-export default SalesPage;
+export default OrdersPage;
