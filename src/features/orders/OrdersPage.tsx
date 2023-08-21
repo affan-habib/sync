@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Button, Chip, Dialog, Skeleton } from "@mui/material";
-import { useSalesQuery } from "hooks/useSalesQuery";
+import { useOrdersQuery } from "hooks/useOrdersQuery";
 import { DashboardLayout } from "components/layouts/DashboardLayout";
 import ReactTable from "components/tables/ReactTable";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -12,7 +12,7 @@ const OrdersPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderItems, setSelectedOrderItems] = useState([]); // State to hold selected order items
 
-  const { data, isLoading, error } = useSalesQuery(currentPage, rowsPerPage);
+  const { data, isLoading, error } = useOrdersQuery(currentPage, rowsPerPage);
 
   const handleOpenModal = (items: any) => {
     setSelectedOrderItems(items);
