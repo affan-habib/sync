@@ -24,6 +24,7 @@ interface ReactTableProps<TData, TValue> {
   totalCount: number;
   currentPage: number;
   onChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  rowsPerPageOptions?: number[]; // Made rowsPerPageOptions optional
 }
 
 const ReactTable = <TData, TValue>({
@@ -34,6 +35,7 @@ const ReactTable = <TData, TValue>({
   totalCount,
   currentPage,
   onChangeRowsPerPage,
+  rowsPerPageOptions = [5, 10, 25], // Set default values here
 }: ReactTableProps<TData, TValue>) => {
   const [pageIndex, setPageIndex] = useState(currentPage - 1);
 
@@ -79,7 +81,7 @@ const ReactTable = <TData, TValue>({
         </Table>
       </Box>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={rowsPerPageOptions}
         component="div"
         count={totalCount}
         rowsPerPage={rowsPerPage}

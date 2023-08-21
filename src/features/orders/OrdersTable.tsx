@@ -98,7 +98,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
     },
   ];
 
-
   return (
     <div>
       {isLoading ? (
@@ -120,6 +119,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
             setRowsPerPage(parseInt(event.target.value, 10));
             setCurrentPage(1);
           }}
+          rowsPerPageOptions={[10, 15, 30]}
         />
       ) : null}
     </div>

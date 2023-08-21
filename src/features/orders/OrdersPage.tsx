@@ -5,13 +5,14 @@ import ItemList from "./ItemList";
 import SearchOrder from "./SearchOrder";
 import OrdersTable from "./OrdersTable";
 import useDebounce from "hooks/useDebounce";
+import { Item } from "types/order";
 
 const OrdersPage: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
-  const [search, setSearch] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOrderItems, setSelectedOrderItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(15);
+  const [search, setSearch] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedOrderItems, setSelectedOrderItems] = useState<Item[]>([]);
   const debouncedSearch = useDebounce(search, 500);
 
   const handleOpenModal = (items: any) => {
@@ -36,6 +37,7 @@ const OrdersPage: React.FC = () => {
             setCurrentPage={setCurrentPage}
             setRowsPerPage={setRowsPerPage}
             handleOpenModal={handleOpenModal}
+           
           />
         </div>
         <Dialog open={isModalOpen} onClose={handleCloseModal} maxWidth="lg">
