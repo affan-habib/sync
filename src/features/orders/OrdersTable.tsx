@@ -82,17 +82,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
           size="small"
           label={cell.row.original.payment_method.toUpperCase()}
           variant="filled"
-          color={
-            cell.row.original.payment_method === "wallet"
-              ? "primary"
-              : cell.row.original.payment_method === "CreditCard"
-              ? "success"
-              : cell.row.original.payment_method === "Benefit"
-              ? "info"
-              : cell.row.original.payment_method === "cash"
-              ? "error"
-              : "warning"
-          }
+          color="primary"
         />
       ),
     },
