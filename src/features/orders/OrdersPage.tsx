@@ -1,18 +1,35 @@
 import React, { useState } from "react";
-import { Container, Button, Chip, Dialog, Skeleton } from "@mui/material";
+import {
+  Container,
+  Button,
+  Chip,
+  Dialog,
+  Skeleton,
+  OutlinedInput,
+  SvgIcon,
+  InputAdornment,
+  Card,
+} from "@mui/material";
 import { useOrdersQuery } from "hooks/useOrdersQuery";
 import { DashboardLayout } from "components/layouts/DashboardLayout";
 import ReactTable from "components/tables/ReactTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import ItemList from "./ItemList";
+import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
+import useDebounce from "hooks/useDebounce";
 
 const OrdersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderItems, setSelectedOrderItems] = useState([]); // State to hold selected order items
-
-  const { data, isLoading, error } = useOrdersQuery(currentPage, rowsPerPage);
+  const debouncedSearch = useDebounce(search, 500);
+  const { data, isLoading, error } = useOrdersQuery(
+    currentPage,
+    rowsPerPage,
+    debouncedSearch
+  );
 
   const handleOpenModal = (items: any) => {
     setSelectedOrderItems(items);
@@ -101,6 +118,22 @@ const OrdersPage: React.FC = () => {
       <Container maxWidth="xl">
         <div>
           <h1 style={{ marginTop: 60, marginBottom: 20 }}>Orders</h1>
+          <Card sx={{ p: 2 , mb:4}}>
+            <OutlinedInput
+              fullWidth
+              placeholder="Search Order"
+              startAdornment={
+                <InputAdornment position="start">
+                  <SvgIcon color="action" fontSize="small">
+                    <MagnifyingGlassIcon />
+                  </SvgIcon>
+                </InputAdornment>
+              }
+              sx={{ maxWidth: 500 }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Card>
           {isLoading ? (
             // Display Skeleton rows while loading
             Array.from({ length: 10 }).map((_, index) => (
