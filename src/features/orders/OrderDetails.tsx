@@ -12,6 +12,7 @@ import {
   Divider,
 } from "@mui/material";
 import { Item } from "types/order";
+import ItemList from "./ItemList";
 
 interface OrderDetailsProps {
   selectedOrder: {
@@ -61,6 +62,7 @@ const OrderDetailsComponent: React.FC<OrderDetailsProps> = ({
                 {/* Add more table headers if needed */}
               </TableRow>
             </TableHead>
+            <ItemList selectedOrderItems={selectedOrder.items} onClose={()=> console.log('')}/>
             <TableBody>
               {selectedOrder.items.map((item: Item) => (
                 <TableRow key={item.id}>
