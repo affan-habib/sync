@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useOrdersQuery } from "hooks/useOrdersQuery";
 import ReactTable from "components/tables/ReactTable";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Skeleton, Button, Chip } from "@mui/material";
+import { Skeleton, Button, Chip, Modal, Card, IconButton } from "@mui/material";
+import OrderDetails from "./OrderDetails"; // Replace with your actual OrderDetails component
+import { Visibility, Edit, Delete } from "@mui/icons-material"; // Import icons
 
 interface OrdersTableProps {
   currentPage: number;
@@ -26,6 +28,19 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
     rowsPerPage,
     debouncedSearch
   );
+
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const handleOpenViewModal = (order: any) => {
+    setSelectedOrder(order);
+    setIsViewModalOpen(true);
+  };
+
+  const handleCloseViewModal = () => {
+    setSelectedOrder(null);
+    setIsViewModalOpen(false);
+  };
 
   const OrdersColumns: ColumnDef<any, any>[] = [
     {
@@ -86,6 +101,22 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
         />
       ),
     },
+    {
+      header: "Actions", // Add the Actions column
+      cell: (cell) => (
+        <div>
+          <IconButton onClick={() => handleOpenViewModal(cell.row.original)}>
+            <Visibility />
+          </IconButton>
+          <IconButton>
+            <Edit />
+          </IconButton>
+          <IconButton>
+            <Delete />
+          </IconButton>
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -98,19 +129,32 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
       ) : error ? (
         <p>Error fetching orders: {error.toString()}</p>
       ) : data ? (
-        <ReactTable
-          columns={OrdersColumns}
-          data={data.data}
-          onPageChange={setCurrentPage}
-          rowsPerPage={rowsPerPage}
-          totalCount={data.total}
-          currentPage={currentPage}
-          onChangeRowsPerPage={(event) => {
-            setRowsPerPage(parseInt(event.target.value, 10));
-            setCurrentPage(1);
-          }}
-          rowsPerPageOptions={[10, 15, 30]}
-        />
+        <>
+          <ReactTable
+            columns={OrdersColumns}
+            data={data.data}
+            onPageChange={setCurrentPage}
+            rowsPerPage={rowsPerPage}
+            totalCount={data.total}
+            currentPage={currentPage}
+            onChangeRowsPerPage={(event) => {
+              setRowsPerPage(parseInt(event.target.value, 10));
+              setCurrentPage(1);
+            }}
+            rowsPerPageOptions={[10, 15, 30]}
+          />
+          {/* View Modal */}
+          <Modal open={isViewModalOpen} onClose={handleCloseViewModal}>
+            <div>
+              {selectedOrder && (
+                <Card>
+                  <OrderDetails selectedOrder={selectedOrder} />
+                  <Button onClick={handleCloseViewModal}>Close</Button>
+                </Card>
+              )}
+            </div>
+          </Modal>
+        </>
       ) : null}
     </div>
   );
