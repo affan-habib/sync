@@ -53,26 +53,10 @@ const OrderDetailsComponent: React.FC<OrderDetailsProps> = ({
           {selectedOrder.address.postalCode}
         </Typography>
         <Typography variant="h6">Order Items</Typography>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Item Name</TableCell>
-                <TableCell>Quantity</TableCell>
-                {/* Add more table headers if needed */}
-              </TableRow>
-            </TableHead>
-            <ItemList selectedOrderItems={selectedOrder.items} onClose={()=> console.log('')}/>
-            <TableBody>
-              {selectedOrder.items.map((item: Item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.quantity}</TableCell>
-                  {/* Add more table cells if needed */}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <ItemList
+          selectedOrderItems={selectedOrder.items}
+          onClose={() => console.log("")}
+        />
       </DialogContent>
     </Card>
   );
