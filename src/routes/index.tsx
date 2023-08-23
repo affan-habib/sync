@@ -12,7 +12,14 @@ const Dashboard = lazy(() => import("features/dashboard/Dashboard"));
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/login"
+        element={
+          <Suspense fallback={<></>}>
+            <LoginPage />
+          </Suspense>
+        }
+      />
       <Route
         path="/"
         element={
