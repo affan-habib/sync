@@ -5,6 +5,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Skeleton, Button, Chip, Modal, Card, IconButton } from "@mui/material";
 import OrderDetails from "./OrderDetails"; // Replace with your actual OrderDetails component
 import { Visibility, Edit, Delete } from "@mui/icons-material"; // Import icons
+import ScrollableModal from "components/common/ScrollableModal";
 
 interface OrdersTableProps {
   currentPage: number;
@@ -143,17 +144,16 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
             }}
             rowsPerPageOptions={[10, 15, 30]}
           />
-          {/* View Modal */}
-          <Modal open={isViewModalOpen} onClose={handleCloseViewModal}>
+
+          <ScrollableModal
+            isOpen={isViewModalOpen}
+            onClose={handleCloseViewModal}
+            title="Order details"
+          >
             <div>
-              {selectedOrder && (
-                <Card>
-                  <OrderDetails selectedOrder={selectedOrder} />
-                  <Button onClick={handleCloseViewModal}>Close</Button>
-                </Card>
-              )}
+              {selectedOrder && <OrderDetails selectedOrder={selectedOrder} />}
             </div>
-          </Modal>
+          </ScrollableModal>
         </>
       ) : null}
     </div>

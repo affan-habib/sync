@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Container, Dialog } from "@mui/material";
+import { Container } from "@mui/material";
 import { DashboardLayout } from "components/layouts/DashboardLayout";
 import ItemList from "./ItemList";
 import SearchOrder from "./SearchOrder";
 import OrdersTable from "./OrdersTable";
 import useDebounce from "hooks/useDebounce";
 import { Item } from "types/order";
+import ScrollableModal from "components/common/ScrollableModal";
 
 const OrdersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -37,15 +38,15 @@ const OrdersPage: React.FC = () => {
             setCurrentPage={setCurrentPage}
             setRowsPerPage={setRowsPerPage}
             handleOpenModal={handleOpenModal}
-           
           />
         </div>
-        <Dialog open={isModalOpen} onClose={handleCloseModal} maxWidth="lg">
-          <ItemList
-            selectedOrderItems={selectedOrderItems}
-            onClose={handleCloseModal}
-          />
-        </Dialog>
+        <ScrollableModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          title="Order Details"
+        >
+          <ItemList selectedOrderItems={selectedOrderItems} />
+        </ScrollableModal>
       </Container>
     </DashboardLayout>
   );
