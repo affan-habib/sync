@@ -39,8 +39,8 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
   };
 
   const handleCloseViewModal = () => {
-    setSelectedOrder(null);
     setIsViewModalOpen(false);
+    // setSelectedOrder(null);
   };
 
   const OrdersColumns: ColumnDef<any, any>[] = [
