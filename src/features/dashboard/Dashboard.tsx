@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   return (
-    <DashboardLayout>
+    <>
       <Container
         maxWidth="xl"
         sx={{
@@ -37,7 +37,7 @@ const Dashboard: React.FC = () => {
           </Stack>
         </div>
       </Container>
-    </DashboardLayout>
+    </>
   );
 };
 

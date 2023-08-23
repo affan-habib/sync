@@ -2,6 +2,7 @@
 import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "../components/common/PrivateRoute";
+import { DashboardLayout } from "components/layouts/DashboardLayout";
 
 const LoginPage = lazy(() => import("features/auth/LoginPage"));
 const ProductsPage = lazy(() => import("features/products/ProductsPage"));
@@ -16,7 +17,9 @@ const AppRoutes: React.FC = () => {
         path="/"
         element={
           <PrivateRoute>
-            <Dashboard />
+            <DashboardLayout>
+              <Dashboard />
+            </DashboardLayout>
           </PrivateRoute>
         }
       />
@@ -24,16 +27,24 @@ const AppRoutes: React.FC = () => {
         path="/products"
         element={
           <PrivateRoute>
-            <ProductsPage />
+            <DashboardLayout>
+              <Suspense fallback={<></>}>
+                <ProductsPage />
+              </Suspense>
+            </DashboardLayout>
           </PrivateRoute>
         }
       />
       <Route
         path="/orders"
         element={
-          <PrivateRoute>
-            <OrdersPage />
-          </PrivateRoute>
+          <DashboardLayout>
+            <PrivateRoute>
+              <Suspense fallback={<div></div>}>
+                <OrdersPage />
+              </Suspense>
+            </PrivateRoute>
+          </DashboardLayout>
         }
       />
     </Routes>
@@ -41,11 +52,7 @@ const AppRoutes: React.FC = () => {
 };
 
 const LazyRoutes: React.FC = () => {
-  return (
-    <Suspense fallback={<></>}>
-      <AppRoutes />
-    </Suspense>
-  );
+  return <AppRoutes />;
 };
 
 export default LazyRoutes;

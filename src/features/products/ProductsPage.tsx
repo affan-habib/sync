@@ -107,7 +107,7 @@ const ProductsPage: React.FC = () => {
   };
 
   return (
-    <DashboardLayout>
+    <>
       <Box
         component="main"
         sx={{
@@ -258,7 +258,7 @@ const ProductsPage: React.FC = () => {
           </Stack>
         </Container>
       </Box>
-    </DashboardLayout>
+    </>
   );
 };
 
