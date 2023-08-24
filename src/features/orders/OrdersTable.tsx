@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import { useOrdersQuery } from "hooks/useOrdersQuery";
 import ReactTable from "components/tables/ReactTable";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Skeleton, Button, Chip, Modal, Card, IconButton } from "@mui/material";
+import {
+  Skeleton,
+  Button,
+  Chip,
+  Modal,
+  Card,
+  IconButton,
+  Checkbox,
+} from "@mui/material";
 import OrderDetails from "./OrderDetails"; // Replace with your actual OrderDetails component
-import { Visibility, Edit, Delete } from "@mui/icons-material"; // Import icons
+import { Visibility, Edit, Delete, Check } from "@mui/icons-material"; // Import icons
 import ScrollableModal from "components/common/ScrollableModal";
 
 interface OrdersTableProps {
@@ -110,10 +118,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
             <Visibility />
           </IconButton>
           <IconButton>
-            <Edit />
-          </IconButton>
-          <IconButton>
-            <Delete />
+            <Checkbox checked={cell.row.original.status === "fulfilled"} />
           </IconButton>
         </div>
       ),

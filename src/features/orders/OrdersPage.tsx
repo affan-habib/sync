@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Container } from "@mui/material";
-import { DashboardLayout } from "components/layouts/DashboardLayout";
 import ItemList from "./ItemList";
 import SearchOrder from "./SearchOrder";
 import OrdersTable from "./OrdersTable";
