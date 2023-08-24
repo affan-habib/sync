@@ -14,6 +14,7 @@ import {
 import OrderDetails from "./OrderDetails"; // Replace with your actual OrderDetails component
 import { Visibility, Edit, Delete, Check } from "@mui/icons-material"; // Import icons
 import ScrollableModal from "components/common/ScrollableModal";
+import moment from "moment";
 
 interface OrdersTableProps {
   currentPage: number;
@@ -108,6 +109,12 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
           variant="filled"
           color="primary"
         />
+      ),
+    },
+    {
+      header: "Created At", // Add the Created At column
+      cell: (cell) => (
+        <span>{moment(cell.row.original.created_at).format("MMM DD, YYYY")}</span>
       ),
     },
     {
