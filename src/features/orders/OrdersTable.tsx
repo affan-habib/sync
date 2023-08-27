@@ -2,17 +2,9 @@ import React, { useState } from "react";
 import { useOrdersQuery } from "hooks/useOrdersQuery";
 import ReactTable from "components/tables/ReactTable";
 import type { ColumnDef } from "@tanstack/react-table";
-import {
-  Skeleton,
-  Button,
-  Chip,
-  Modal,
-  Card,
-  IconButton,
-  Checkbox,
-} from "@mui/material";
-import OrderDetails from "./OrderDetails"; // Replace with your actual OrderDetails component
-import { Visibility, Edit, Delete, Check } from "@mui/icons-material"; // Import icons
+import { Skeleton, Button, Chip, IconButton, Checkbox } from "@mui/material";
+import OrderDetails from "./OrderDetails";
+import { Visibility } from "@mui/icons-material";
 import ScrollableModal from "components/common/ScrollableModal";
 import moment from "moment";
 
@@ -114,7 +106,9 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
     {
       header: "Created At", // Add the Created At column
       cell: (cell) => (
-        <span>{moment(cell.row.original.created_at).format("MMM DD, YYYY")}</span>
+        <span>
+          {moment(cell.row.original.created_at).format("MMM DD, YYYY")}
+        </span>
       ),
     },
     {

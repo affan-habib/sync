@@ -12,10 +12,7 @@ import {
   SvgIcon,
   Typography,
   Skeleton,
-  Dialog,
-  Modal,
 } from "@mui/material";
-import { DashboardLayout } from "../../components/layouts/DashboardLayout";
 import { ProductsSearch } from "../../components/products/ProductsSearch";
 import { ProductOverview } from "../../components/products/ProductOverview";
 import { ProductDetailsInfo } from "../../components/products/ProductDetailsInfo";

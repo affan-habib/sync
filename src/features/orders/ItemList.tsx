@@ -10,7 +10,6 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import { Item } from "types/order";
 
 interface ItemListProps {
   selectedOrderItems: any[];
