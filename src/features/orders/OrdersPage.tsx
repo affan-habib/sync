@@ -6,6 +6,8 @@ import OrdersTable from "./OrdersTable";
 import useDebounce from "hooks/useDebounce";
 import { Item } from "types/order";
 import ScrollableModal from "components/common/ScrollableModal";
+import OrderTable from "./OrderTable";
+import OrderDetails from "./OrderDetails";
 
 const OrdersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -39,12 +41,18 @@ const OrdersPage: React.FC = () => {
             handleOpenModal={handleOpenModal}
           />
         </div>
+        <div>
+          <OrderTable
+            debouncedSearch={debouncedSearch}
+            handleOpenModal={handleOpenModal}
+          />
+        </div>
         <ScrollableModal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           title="Order Details"
         >
-          <ItemList selectedOrderItems={selectedOrderItems} />
+          <OrderDetails selectedOrder={selectedOrderItems} />
         </ScrollableModal>
       </Container>
     </>
