@@ -6,20 +6,22 @@ import { apiBaseUrl } from "config";
 const fetchSales = async (
   page: number,
   perPage: number,
-  search: string
+  search: string,
+  sortOrder: string
 ): Promise<OrderDataResponse> => {
   const response = await axios.get(
-    `${apiBaseUrl}/orders/list?page=${page}&perPage=${perPage}&search=${search}`
+    `${apiBaseUrl}/orders/list?page=${page+1}&perPage=${perPage}&search=${search}&sortBy=created_at&order=${sortOrder}`
   );
   return response.data;
 };
 
 export const useOrdersQuery = (
-  currentPage: number,
-  rowsPerPage: number,
-  search: string
+  page: number,
+  perPage: number,
+  search: string,
+  sortOrder: string
 ): UseQueryResult<OrderDataResponse> => {
-  return useQuery(["sales", currentPage, rowsPerPage, search], () =>
-    fetchSales(currentPage, rowsPerPage, search)
+  return useQuery(["sales", page, perPage, search, sortOrder], () =>
+    fetchSales(page, perPage, search, sortOrder)
   );
 };

@@ -1,6 +1,7 @@
 import { ProductType } from "../../types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Avatar, Stack, Typography } from "@mui/material";
+import { Avatar, Stack, Typography, IconButton } from "@mui/material";
+import { Edit, Delete, Visibility } from "@mui/icons-material"; // Import the required icons
 import React from "react";
 
 export const ProductsColumns: ColumnDef<ProductType>[] = [
@@ -58,5 +59,22 @@ export const ProductsColumns: ColumnDef<ProductType>[] = [
   {
     accessorKey: "category",
     header: "Category",
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: () => (
+      <Stack direction="row" spacing={1}>
+        <IconButton aria-label="View" size="small">
+          <Visibility />
+        </IconButton>
+        <IconButton aria-label="Edit" size="small">
+          <Edit />
+        </IconButton>
+        <IconButton aria-label="Delete" size="small">
+          <Delete />
+        </IconButton>
+      </Stack>
+    ),
   },
 ];

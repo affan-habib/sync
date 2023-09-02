@@ -1,6 +1,6 @@
 // SearchOrder.tsx
 import React from "react";
-import { OutlinedInput, SvgIcon, InputAdornment, Card } from "@mui/material";
+import { OutlinedInput, SvgIcon, InputAdornment } from "@mui/material";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 
 interface SearchOrderProps {
@@ -10,7 +10,7 @@ interface SearchOrderProps {
 
 const SearchOrder: React.FC<SearchOrderProps> = ({ search, setSearch }) => {
   return (
-    <Card sx={{ p: 2, mb: 4 }}>
+    <>
       <OutlinedInput
         fullWidth
         placeholder="Search Order"
@@ -25,7 +25,7 @@ const SearchOrder: React.FC<SearchOrderProps> = ({ search, setSearch }) => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-    </Card>
+    </>
   );
 };
 

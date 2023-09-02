@@ -28,7 +28,7 @@ const CustomerAddress: React.FC<AddressProps> = ({ address }) => {
   return (
     <div>
       <Typography variant="subtitle1" my={2}>
-        Customer Info
+        Customer Address
       </Typography>
       <Divider sx={{ mb: 2 }} />
       <Grid container spacing={2}>

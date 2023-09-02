@@ -7,6 +7,7 @@ interface PaymentInfoProps {
     total_amount: string;
     payment_method: string;
     currency: string;
+    reference: string;
     // Add more payment-related properties here if needed
   };
 }
@@ -32,7 +33,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({ paymentData }) => {
         <Grid item xs={12} md={3}>
           <TextField
             label="Total Amount"
-            value={paymentData.total_amount}
+            value={`${paymentData.currency} ${paymentData.total_amount}`}
             InputProps={{
               readOnly: true,
             }}
@@ -49,10 +50,20 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({ paymentData }) => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} md={3}>
+        {/* <Grid item xs={12} md={3}>
           <TextField
             label="Currency"
             value={paymentData.currency}
+            InputProps={{
+              readOnly: true,
+            }}
+            fullWidth
+          />
+        </Grid> */}
+        <Grid item xs={12} md={3}>
+          <TextField
+            label="Reference"
+            value={paymentData.reference}
             InputProps={{
               readOnly: true,
             }}

@@ -8,7 +8,7 @@ interface OrderDetailsProps {
   selectedOrder: any;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
+const index: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
   return (
     <div>
       <CustomerInfo user={selectedOrder.user} />
@@ -19,4 +19,4 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
   );
 };
 
-export default OrderDetails;
+export default index;

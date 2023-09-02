@@ -19,7 +19,7 @@ const ItemList: React.FC<ItemListProps> = ({ selectedOrderItems }) => {
   return (
     <>
       <Typography variant="subtitle1" my={2}>
-      {selectedOrderItems.length} items
+        {selectedOrderItems.length} items
       </Typography>
       <Divider sx={{ mb: 2 }} />
       <TableContainer component={Card} sx={{ minHeight: 200 }}>
@@ -31,6 +31,7 @@ const ItemList: React.FC<ItemListProps> = ({ selectedOrderItems }) => {
               <TableCell>Brand</TableCell>
               <TableCell>Quantity</TableCell>
               <TableCell>Price</TableCell>
+              <TableCell>Stock</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -43,6 +44,7 @@ const ItemList: React.FC<ItemListProps> = ({ selectedOrderItems }) => {
                 <TableCell>
                   {item.currency} {item.price}
                 </TableCell>
+                <TableCell>{item.product.stock_quantity}</TableCell>
               </TableRow>
             ))}
           </TableBody>

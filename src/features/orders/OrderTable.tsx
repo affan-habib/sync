@@ -1,21 +1,46 @@
 import MuiTable from "components/tables/MuiTable";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useOrdersQuery } from "hooks/useOrdersQuery";
-import { Chip, IconButton, Button, Checkbox } from "@mui/material";
+import { Chip, IconButton, Button } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
 import moment from "moment";
 import { useState } from "react";
+import StatusCell from "./StatusCell";
+import ScrollableModal from "components/common/ScrollableModal";
+import OrderDetails from "../order-details";
+import TableSkeleton from "components/common/TableSkeleton";
 
 interface OrdersTableProps {
   debouncedSearch: string;
   handleOpenModal: (items: any) => void;
+  sortOrder: string;
 }
 
 const OrderTable: React.FC<OrdersTableProps> = ({
   handleOpenModal,
   debouncedSearch,
+  sortOrder,
 }) => {
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const handleOpenViewModal = (order: any) => {
+    setSelectedOrder(order);
+    setIsViewModalOpen(true);
+  };
+
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+    // setSelectedOrder(null);
+  };
   const OrdersColumns: GridColDef[] = [
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 150,
+      valueGetter: (params) =>
+        moment(params.row.created_at).format("MMM DD, YYYY"),
+    },
     {
       field: "customerName",
       headerName: "Customer Name",
@@ -49,25 +74,6 @@ const OrderTable: React.FC<OrdersTableProps> = ({
       ),
     },
     {
-      field: "status",
-      headerName: "Status",
-      width: 150,
-      renderCell: (params: GridRenderCellParams) => (
-        <Chip
-          label={params.row.status.toUpperCase()}
-          size="small"
-          variant="outlined"
-          color={
-            params.row.status === "pending"
-              ? "warning"
-              : params.row.status === "processing"
-              ? "info"
-              : "default"
-          }
-        />
-      ),
-    },
-    {
       field: "paymentMethod",
       headerName: "Payment Method",
       width: 150,
@@ -81,53 +87,82 @@ const OrderTable: React.FC<OrdersTableProps> = ({
       ),
     },
     {
-      field: "createdAt",
-      headerName: "Created At",
+      field: "reference",
+      headerName: "Reference",
       width: 150,
-      valueGetter: (params) =>
-        moment(params.row.created_at).format("MMM DD, YYYY"),
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      renderCell: (params: GridRenderCellParams) => (
+        <StatusCell row={params.row} />
+      ),
+      width: 150,
+      align: "center",
     },
     {
       field: "actions",
       headerName: "Actions",
       width: 150,
+      align: "center",
+      headerAlign: "center",
       renderCell: (params: GridRenderCellParams) => (
         <div>
-          <IconButton onClick={() => handleOpenModal(params.row)}>
+          <IconButton onClick={() => handleOpenViewModal(params.row)}>
             <Visibility />
-          </IconButton>
-          <IconButton>
-            <Checkbox checked={params.row.status === "fulfilled"} />
           </IconButton>
         </div>
       ),
     },
   ];
 
-  const [pageSize, setPageSize] = useState<number>(15);
-  const [pageIndex, setPageIndex] = useState<number>(0);
+  const [pagination, setPagination] = useState({
+    page: 0,
+    pageSize: 15,
+  });
 
   const { data, isLoading, error } = useOrdersQuery(
-    pageIndex + 1,
-    pageSize,
-    debouncedSearch
+    pagination.page,
+    pagination.pageSize,
+    debouncedSearch,
+    sortOrder
   );
 
   const handlePageinationModelChange = (model: any) => {
-    setPageIndex(model.page + 1);
-    setPageSize(model.pageSize);
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      page: model.page,
+      pageSize: model.pageSize,
+    }));
   };
 
   return (
     <div>
-      <MuiTable
-        checkboxSelection={false}
-        columns={OrdersColumns}
-        rows={data?.data || []}
-        getRowId={(row) => row.id}
-        onPageinationModelChange={handlePageinationModelChange}
-        rowCount={data?.total || 0}
-      />
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        <MuiTable
+          columns={OrdersColumns}
+          rows={data?.data || []}
+          getRowId={(row) => row.id}
+          onPageinationModelChange={handlePageinationModelChange}
+          rowCount={data?.total || 0}
+          paginationModel={{
+            page: pagination.page,
+            pageSize: pagination.pageSize,
+            rowCount: data?.total || 0,
+          }}
+        />
+      )}
+      <ScrollableModal
+        isOpen={isViewModalOpen}
+        onClose={handleCloseViewModal}
+        title="Order details"
+      >
+        <div>
+          {selectedOrder && <OrderDetails selectedOrder={selectedOrder} />}
+        </div>
+      </ScrollableModal>
     </div>
   );
 };
