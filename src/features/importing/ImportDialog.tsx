@@ -1,15 +1,15 @@
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Modal,
   TextField,
-  Typography,
 } from "@mui/material";
 import { FC, useState } from "react";
+import Papa from "papaparse";
+import axios from "axios";
+import { importCsv } from "api/products/productsAPI";
 
 interface ImportDialogProps {
   show: boolean;
@@ -17,6 +17,37 @@ interface ImportDialogProps {
 }
 export const ImportDialog: FC<ImportDialogProps> = ({ show, hide }) => {
   const [file, setFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const validateRow = (row: any) => {
+    // Validate enums
+    const allowedStatus = ["active", "inactive"];
+    const allowedSubvariantType = [
+      "multi-color",
+      "multi-option",
+      "multi-shade",
+      "multi-size",
+      "single",
+    ];
+
+    if (!allowedStatus.includes(row.status.toLowerCase())) {
+      return `Invalid 'Status' value: '${row.status}' on row ${
+        row.__parsedRowNumber
+      }. Allowed values are ${allowedStatus.join(", ")}.`;
+    }
+    if (
+      row.subvariant_type &&
+      !allowedSubvariantType.includes(row.subvariant_type.toLowerCase())
+    ) {
+      return `Invalid 'Subvariant Type' value: '${
+        row.subvariant_type
+      }' on row ${
+        row.__parsedRowNumber
+      }. Allowed values are ${allowedSubvariantType.join(", ")}.`;
+    }
+    // Add more validation checks as needed
+    return null;
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFile(e.target.files?.[0] || null);
@@ -24,12 +55,34 @@ export const ImportDialog: FC<ImportDialogProps> = ({ show, hide }) => {
 
   const handleFileUpload = () => {
     if (file) {
-      // Handle file upload
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (result: any) {
+          for (let i = 0; i < result.data.length; i++) {
+            const row = result.data[i];
+            row.__parsedRowNumber = i + 1;
+            const rowError = validateRow(row);
+            if (rowError) {
+              setError(rowError);
+              return;
+            }
+          }
+          importCsv(file).then(() => {
+            alert(
+              "Successfully uploaded, the products are being processed in the background."
+            );
+          });
+        },
+      });
     }
   };
 
   const handleSampleDownload = () => {
-    // Handle sample download
+    const link = document.createElement("a");
+    link.href = `${process.env.PUBLIC_URL}/products_template.csv`;
+    link.download = "products_template.csv";
+    link.click();
   };
 
   return (
@@ -48,6 +101,7 @@ export const ImportDialog: FC<ImportDialogProps> = ({ show, hide }) => {
           InputLabelProps={{ shrink: true }}
           onChange={handleFileChange}
         />
+        {error && <div style={{ color: "red" }}>{error}</div>}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleFileUpload} variant="contained" color="primary">

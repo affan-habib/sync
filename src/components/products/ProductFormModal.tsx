@@ -111,22 +111,16 @@ export const ProductFormModal: React.FC<Props> = ({ open, onClose }) => {
     mediaType: "image" | "video"
   ) => {
     for (const mediaFile of mediaFiles) {
-      const { presignedUrl, url } = await presign(
+      const { presignedUrl } = await presign(
         productId,
         mediaFile.name,
         mediaFile.type,
         mediaFile.size,
         mediaType
       );
+
       await uploadPresignedFile(presignedUrl, mediaFile);
-      await saveMedia(
-        productId,
-        mediaType,
-        url,
-        mediaFile.name,
-        mediaFile.type,
-        mediaFile.size
-      );
+      await saveMedia(productId, mediaType, presignedUrl, mediaFile);
     }
   };
 

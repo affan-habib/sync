@@ -3,10 +3,9 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "../components/common/PrivateRoute";
 import { DashboardLayout } from "components/layouts/DashboardLayout";
-import ProductPage from "features/product/ProductPage";
 
 const LoginPage = lazy(() => import("features/auth/LoginPage"));
-const ProductsPage = lazy(() => import("features/products/ProductsPage"));
+const ProductsPage = lazy(() => import("features/product/ProductPage"));
 const OrdersPage = lazy(() => import("features/orders/OrdersPage"));
 const Dashboard = lazy(() => import("features/dashboard/Dashboard"));
 
@@ -50,18 +49,6 @@ const AppRoutes: React.FC = () => {
             <PrivateRoute>
               <Suspense fallback={<div></div>}>
                 <OrdersPage />
-              </Suspense>
-            </PrivateRoute>
-          </DashboardLayout>
-        }
-      />
-      <Route
-        path="/product"
-        element={
-          <DashboardLayout>
-            <PrivateRoute>
-              <Suspense fallback={<div></div>}>
-                <ProductPage />
               </Suspense>
             </PrivateRoute>
           </DashboardLayout>

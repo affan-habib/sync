@@ -1,6 +1,6 @@
 import axios from "axios";
-import { ProductFormData, ProductType } from "../../types";
 import { apiBaseUrl } from "../../config";
+import { ProductFormData, ProductType } from "../../types";
 
 interface MetaData {
   current_page: number;
@@ -67,6 +67,10 @@ export const presign = async (
 };
 
 export const uploadPresignedFile = async (presignedUrl: string, file: File) => {
+  if (!presignedUrl || !file) {
+    throw new Error("Missing presignedUrl or file");
+  }
+
   const response = await axios.put(presignedUrl, file, {
     headers: {
       "Content-Type": file.type,
@@ -84,19 +88,32 @@ export const uploadPresignedFile = async (presignedUrl: string, file: File) => {
 export const saveMedia = async (
   productId: number | string,
   mediaType: "image" | "video",
-  fileUrl: string,
-  fileName: string,
-  fileType: string,
-  fileSize: number
+  presignedUrl: string,
+  file: File
 ) => {
   const response = await axios.post(
     `${apiBaseUrl}/products/${productId}/save-${mediaType}`,
     {
-      mediaType,
-      fileUrl,
-      fileName,
-      fileType,
-      fileSize,
+      fileName: file.name,
+      fileType: file.type,
+      fileSize: file.size,
+      s3Url: presignedUrl.split("?")[0],
+    }
+  );
+
+  return response.data;
+};
+
+export const importCsv = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const response = await axios.post(
+    `${apiBaseUrl}/products/import-from-csv`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     }
   );
 

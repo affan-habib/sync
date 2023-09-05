@@ -36,7 +36,7 @@ export const useProductsQuery = (
 ) => {
   return useQuery<ProductResponse, Error>(
     ["products", page, rowsPerPage, searchTerm],
-    () => fetchProducts(page, rowsPerPage, searchTerm),
+    () => fetchProducts(page + 1, rowsPerPage, searchTerm),
     {
       keepPreviousData: true,
     }

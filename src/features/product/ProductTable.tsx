@@ -2,12 +2,16 @@ import { useState } from "react";
 import MuiTable from "components/tables/MuiTable";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import moment from "moment";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import TableSkeleton from "components/common/TableSkeleton";
 import { useProductsQuery } from "hooks/useProductsQuery";
 import { Avatar, Stack, Typography } from "@mui/material";
+import axios from "axios";
+import { useQueryClient } from "react-query";
+import { apiBaseUrl } from "config";
+import ConfirmModal from "components/common/ConfirmModal";
 
 interface OrdersTableProps {
   debouncedSearch: string;
@@ -18,8 +22,40 @@ const ProductTable: React.FC<OrdersTableProps> = ({
   debouncedSearch,
   sortOrder,
 }) => {
+  const queryClient = useQueryClient();
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false); // State to manage modal open/close
+  const [productIdToDelete, setProductIdToDelete] = useState<number | null>(
+    null
+  ); // State to store the product ID to delete
 
-  // ...
+  const deleteProduct = async (productId: number) => {
+    try {
+      await axios.delete(`${apiBaseUrl}/products/${productId}`);
+      queryClient.invalidateQueries("products");
+      // Close the modal after successful deletion
+      setDeleteModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Event handler for opening the delete confirmation modal
+  const handleOpenDeleteModal = (productId: number) => {
+    setProductIdToDelete(productId);
+    setDeleteModalOpen(true);
+  };
+
+  // Event handler for closing the delete confirmation modal
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+  };
+
+  // Event handler for confirming the delete action in the modal
+  const handleConfirmDelete = () => {
+    if (productIdToDelete !== null) {
+      deleteProduct(productIdToDelete);
+    }
+  };
 
   const OrdersColumns: GridColDef[] = [
     {
@@ -30,9 +66,7 @@ const ProductTable: React.FC<OrdersTableProps> = ({
         <Stack alignItems="center" direction="row" spacing={2}>
           <Avatar
             src={
-              params.value
-                ? params.value
-                : "https://via.placeholder.com/150"
+              params.value ? params.value : "https://via.placeholder.com/150"
             }
             alt={params.row.name}
             variant="square"
@@ -107,19 +141,20 @@ const ProductTable: React.FC<OrdersTableProps> = ({
       headerName: "Actions",
       width: 200,
       align: "center",
-      headerAlign: 'center',
+      headerAlign: "center",
       renderCell: (params: GridRenderCellParams) => (
-        <Stack spacing={2} direction='row' alignItems='center'>
+        <Stack spacing={2} direction="row" alignItems="center">
           <VisibilityIcon /> {/* View Icon */}
           <EditIcon /> {/* Edit Icon */}
-          <DeleteIcon /> {/* Delete Icon */}
+          <DeleteIcon
+            // Open the delete confirmation modal when clicked
+            onClick={() => handleOpenDeleteModal(params.row.id)}
+          />
         </Stack>
       ),
     },
     // Add more columns here as needed
   ];
-
-
 
   const [pagination, setPagination] = useState({
     page: 0,
@@ -158,6 +193,15 @@ const ProductTable: React.FC<OrdersTableProps> = ({
           }}
         />
       )}
+
+      {/* Render the ConfirmModal */}
+      <ConfirmModal
+        open={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCloseDeleteModal}
+        message="Are you sure you want to delete this product?"
+      />
     </div>
   );
 };

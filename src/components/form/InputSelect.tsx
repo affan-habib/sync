@@ -6,12 +6,16 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 type InputSelectProps = FieldHookConfig<string> & {
   label: string;
-  options: { value: string; label: string }[];
+  options: any[]; // Accept any array
+  valueKey: string; // Custom value key
+  labelKey: string; // Custom label key
 };
 
 const InputSelect: React.FC<InputSelectProps> = ({
   label,
   options,
+  valueKey,
+  labelKey,
   ...props
 }) => {
   const [field, meta] = useField(props);
@@ -31,8 +35,8 @@ const InputSelect: React.FC<InputSelectProps> = ({
         onBlur={field.onBlur}
       >
         {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
+          <MenuItem key={option[valueKey]} value={option[valueKey]}>
+            {option[labelKey]}
           </MenuItem>
         ))}
       </Select>

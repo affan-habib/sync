@@ -1,5 +1,5 @@
 // FilterProduct.tsx
-import React from "react";
+import React, { useState } from "react";
 import {
   OutlinedInput,
   SvgIcon,
@@ -9,6 +9,8 @@ import {
   Button,
 } from "@mui/material";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
+import { ArrowUpOnSquareIcon } from "@heroicons/react/24/outline";
+import { ImportDialog } from "features/importing/ImportDialog";
 
 interface SearchOrderProps {
   search: string;
@@ -31,9 +33,22 @@ const FilterProduct: React.FC<SearchOrderProps & StatusProps> = ({
     setStatus(newStatus);
   };
 
-  return (
+  const [showImportDialog, setShowImportDialog] = useState(false);
 
-    <Stack direction="row" alignItems="center" spacing={2} justifyContent='space-between' mb={3}>
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={2}
+      justifyContent="space-between"
+      mb={3}
+    >
+      {showImportDialog && (
+        <ImportDialog
+          show={showImportDialog}
+          hide={() => setShowImportDialog(false)}
+        />
+      )}
       {/* Search Input */}
       <OutlinedInput
         fullWidth
@@ -49,6 +64,18 @@ const FilterProduct: React.FC<SearchOrderProps & StatusProps> = ({
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
+
+      <Button
+        style={{ marginLeft: "auto" }}
+        startIcon={
+          <SvgIcon fontSize="small">
+            <ArrowUpOnSquareIcon />
+          </SvgIcon>
+        }
+        onClick={() => setShowImportDialog(true)}
+      >
+        Import from CSV
+      </Button>
 
       {/* Button Group for Status */}
       <ButtonGroup variant="outlined" color="primary">
@@ -72,7 +99,6 @@ const FilterProduct: React.FC<SearchOrderProps & StatusProps> = ({
         </Button>
       </ButtonGroup>
     </Stack>
-
   );
 };
 
