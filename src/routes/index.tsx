@@ -5,8 +5,6 @@ import PrivateRoute from "../components/common/PrivateRoute";
 import { DashboardLayout } from "components/layouts/DashboardLayout";
 
 const LoginPage = lazy(() => import("features/auth/LoginPage"));
-const ProductsPage = lazy(() => import("features/product/ProductPage"));
-const OrdersPage = lazy(() => import("features/orders/OrdersPage"));
 const Dashboard = lazy(() => import("features/dashboard/Dashboard"));
 
 const AppRoutes: React.FC = () => {
@@ -23,35 +21,11 @@ const AppRoutes: React.FC = () => {
       <Route
         path="/"
         element={
-          <PrivateRoute>
+          <>
             <DashboardLayout>
               <Dashboard />
             </DashboardLayout>
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/products"
-        element={
-          <PrivateRoute>
-            <DashboardLayout>
-              <Suspense fallback={<></>}>
-                <ProductsPage />
-              </Suspense>
-            </DashboardLayout>
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/orders"
-        element={
-          <DashboardLayout>
-            <PrivateRoute>
-              <Suspense fallback={<div></div>}>
-                <OrdersPage />
-              </Suspense>
-            </PrivateRoute>
-          </DashboardLayout>
+          </>
         }
       />
     </Routes>

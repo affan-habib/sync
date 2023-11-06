@@ -1,5 +1,5 @@
-import {useTheme} from '@mui/material/styles';
-import {FC} from 'react';
+import { useTheme } from '@mui/material/styles';
+import { FC } from 'react';
 
 const Logo: FC = () => {
     const theme = useTheme();
@@ -14,8 +14,8 @@ const Logo: FC = () => {
             xmlns="http://www.w3.org/2000/svg"
         >
             <g transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)"
-               fill={fillColor}
-               stroke="none">
+                fill={fillColor}
+                stroke="none">
                 <path d="M0 5120 l0 -5120 5120 0 5120 0 0 5120 0 5120 -5120 0 -5120 0 0
     -5120z m5007 3451 c311 -59 584 -179 841 -370 48 -36 182 -159 297 -273 l210
     -208 -165 -163 c-149 -147 -173 -168 -250 -205 -113 -56 -193 -75 -310 -74

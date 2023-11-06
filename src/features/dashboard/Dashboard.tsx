@@ -1,6 +1,5 @@
 import React from "react";
-import { Button, Container, Stack, Typography } from "@mui/material";
-import { items } from "components/layouts/config";
+import { Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
@@ -28,22 +27,6 @@ const Dashboard: React.FC = () => {
           >
             Currently you can visit below routes
           </Typography>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-            spacing={2}
-          >
-            {items.map((item) => (
-              <Button
-                variant="contained"
-                key={item.path}
-                onClick={() => navigate(item.path)}
-              >
-                {item.path}
-              </Button>
-            ))}
-          </Stack>
         </div>
       </Container>
     </>

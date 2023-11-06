@@ -6,7 +6,7 @@ import AppRoutes from "routes";
 const App: React.FC = () => {
   return (
     <Router>
-      <AppRoutes /> {/* Use the separate routes component */}
+      <AppRoutes />
     </Router>
   );
 };
