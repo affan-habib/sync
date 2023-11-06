@@ -1,10 +1,9 @@
-import React, {useCallback, useState} from 'react';
-import {useFormik} from 'formik';
+import React, { useCallback, useState } from 'react';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import {useNavigate} from 'react-router-dom';
-import {Box, Button, Stack, TextField, Typography} from '@mui/material';
-import {useLoginMutation} from "./useLoginMutation";
-import AuthLayout from "../../components/layouts/AuthLayout";
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { useLoginMutation } from "./useLoginMutation";
 
 const LoginPage: React.FC = () => {
     const navigate = useNavigate();
@@ -34,8 +33,8 @@ const LoginPage: React.FC = () => {
                 await loginMutation.mutateAsync(values);
                 navigate('/');
             } catch (err) {
-                helpers.setStatus({success: false});
-                helpers.setErrors({submit: (err as Error).message});
+                helpers.setStatus({ success: false });
+                helpers.setErrors({ submit: (err as Error).message });
                 helpers.setSubmitting(false);
             }
         }
@@ -49,7 +48,7 @@ const LoginPage: React.FC = () => {
     );
 
     return (
-        <AuthLayout>
+        <>
             <Box
                 sx={{
                     backgroundColor: 'background.paper',
@@ -70,7 +69,7 @@ const LoginPage: React.FC = () => {
                     <div>
                         <Stack
                             spacing={1}
-                            sx={{mb: 3}}
+                            sx={{ mb: 3 }}
                         >
                             <Typography variant="h4">
                                 Login
@@ -108,7 +107,7 @@ const LoginPage: React.FC = () => {
                                 {formik.errors.submit && (
                                     <Typography
                                         color="error"
-                                        sx={{mt: 3}}
+                                        sx={{ mt: 3 }}
                                         variant="body2"
                                     >
                                         {formik.errors.submit}
@@ -117,7 +116,7 @@ const LoginPage: React.FC = () => {
                                 <Button
                                     fullWidth
                                     size="large"
-                                    sx={{mt: 3}}
+                                    sx={{ mt: 3 }}
                                     type="submit"
                                     variant="contained"
                                 >
@@ -128,7 +127,7 @@ const LoginPage: React.FC = () => {
                         {method === 'phoneNumber' && (
                             <div>
                                 <Typography
-                                    sx={{mb: 1}}
+                                    sx={{ mb: 1 }}
                                     variant="h6"
                                 >
                                     Currently Not available
@@ -141,7 +140,7 @@ const LoginPage: React.FC = () => {
                     </div>
                 </Box>
             </Box>
-        </AuthLayout>
+        </>
     );
 };
 

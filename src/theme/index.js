@@ -20,6 +20,12 @@ export function createTheme() {
         xl: 1440
       }
     },
+    components,
+    palette,
+    shadows,
+    shape: {
+      borderRadius: 8
+    },
     typography
   });
 }

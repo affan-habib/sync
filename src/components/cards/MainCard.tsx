@@ -25,9 +25,9 @@ const MainCard: React.FC<MainCardProps> = ({
           title={title}
           sx={{
             display: "flex",
-            justifyContent: "space-between", // Align items on the right side
+            justifyContent: "space-between",
           }}
-          action={modalButton} // Place the modalButton as an action in CardHeader
+          action={modalButton}
         />
         <CardContent>{children}</CardContent>
       </Card>
