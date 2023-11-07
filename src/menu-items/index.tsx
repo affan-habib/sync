@@ -10,7 +10,7 @@ interface Item {
 
 export const items: Item[] = [
     {
-        title: 'Products',
+        title: 'ড্যাশবোর্ড',
         path: '/products',
         icon: (
             <SvgIcon fontSize="small">
@@ -19,7 +19,7 @@ export const items: Item[] = [
         )
     },
     {
-        title: 'Sales Orders',
+        title: 'প্রশিক্ষণার্থীর বিবরণী',
         path: '/orders',
         icon: (
             <SvgIcon fontSize="small">

@@ -140,7 +140,7 @@ interface DashboardLayoutProps {
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+        <DrawerHeader sx={{bgcolor: "white"}}>
          Logo
         </DrawerHeader>
         <Divider />
