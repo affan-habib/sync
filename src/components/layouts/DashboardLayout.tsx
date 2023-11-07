@@ -96,16 +96,9 @@ interface DashboardLayoutProps {
  const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
 }) => {
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -113,17 +106,17 @@ interface DashboardLayoutProps {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{bgcolor: 'white'}}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton
-              color="inherit"
+              color="primary"
               aria-label="open drawer"
-              onClick={handleDrawerOpen}
+              onClick={()=> setOpen(!open)}
               edge="start"
               sx={{
                 marginRight: 5,
-                ...(open && { display: "none" }),
+                // ...(open && { display: "none" }),
               }}
             >
               <MenuIcon />
@@ -132,7 +125,7 @@ interface DashboardLayoutProps {
           </Box>
           {/* Add the Logout Button */}
           <IconButton
-            color="inherit"
+            color="primary"
             aria-label="logout"
             onClick={handleLogout}
           >
@@ -142,13 +135,7 @@ interface DashboardLayoutProps {
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
+         Logo
         </DrawerHeader>
         <Divider />
         <List>
