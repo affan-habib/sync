@@ -2,7 +2,6 @@ import React, {useCallback} from 'react';
 import {Box, IconButton, Stack, SvgIcon, Tooltip} from '@mui/material';
 import {alpha} from '@mui/material/styles';
 import ArrowLeftOnRectangleIcon from '@heroicons/react/24/solid/ArrowLeftOnRectangleIcon';
-import Logo from "../common/Logo";
 import {logout} from '../../features/auth/authSlice';
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -50,21 +49,6 @@ export const TopNav = () => {
                         px: 2
                     }}
                 >
-                    <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                    >
-                        <Box
-                            sx={{
-                                display: 'inline-flex',
-                                height: 32,
-                                width: 32
-                            }}
-                        >
-                            <Logo/>
-                        </Box>
-                    </Stack>
                     <Stack
                         alignItems="center"
                         direction="row"

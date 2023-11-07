@@ -1,5 +1,7 @@
 import React from "react";
-import { Container, Typography } from "@mui/material";
+import { Button, Container} from "@mui/material";
+import Section from "sections/dashboard/Section";
+import MainCard from "components/cards/MainCard";
 
 const Dashboard: React.FC = () => {
   return (
@@ -12,19 +14,9 @@ const Dashboard: React.FC = () => {
         height: "100%",
       }}
     >
-      <div>
-        <Typography variant="h1" component="h1">
-          Home page Coming soon
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          component="h1"
-          align="center"
-          gutterBottom
-        >
-          Currently you can visit below routes
-        </Typography>
-      </div>
+      <MainCard title="Users" modalButton={<Button variant="contained">Add User</Button>}>
+        <Section/>
+      </MainCard>
     </Container>
   );
 };

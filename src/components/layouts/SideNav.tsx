@@ -2,7 +2,7 @@ import React from 'react';
 import {useLocation} from 'react-router-dom';
 import {Box, Drawer, Theme, useMediaQuery} from '@mui/material';
 import {SideNavItem} from './SideNavItem';
-import {items} from './config';
+import {items} from 'menu-items';
 
 interface SideNavProps {
     open: boolean;

@@ -6,9 +6,9 @@ const AdminRoutes = {
 
   path: "/",
   element: (
-    <PrivateRoute>
+    <>
       <DashboardLayout />
-    </PrivateRoute>
+    </>
   ),
   children: [
     {
