@@ -93,8 +93,7 @@ const Drawer = styled(MuiDrawer, {
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
-
-export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
+ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
 }) => {
   const theme = useTheme();
@@ -192,3 +191,5 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </Box>
   );
 };
+
+export default DashboardLayout;
