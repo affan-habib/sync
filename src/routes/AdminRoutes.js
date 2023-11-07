@@ -12,7 +12,7 @@ const AdminRoutes = {
   ),
   children: [
     {
-      path: "/dashboard",
+      path: "",
       element: <Dashboard />,
     },
   ],

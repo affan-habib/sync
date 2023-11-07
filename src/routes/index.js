@@ -4,5 +4,5 @@ import AdminRoutes from './AdminRoutes';
 
 export default function ThemeRoutes() {
 
-  return useRoutes([PublicRoutes, AdminRoutes]);
+  return useRoutes([AdminRoutes, PublicRoutes]);
 }
