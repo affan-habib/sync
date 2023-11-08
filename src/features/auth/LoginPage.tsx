@@ -1,147 +1,135 @@
-import React, { useCallback, useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
-import { useLoginMutation } from "./useLoginMutation";
+import React, { useState } from 'react';
+import { Container, Grid, Paper, Typography, TextField, Button, FormControlLabel, Checkbox, InputAdornment, Box, Card, CardContent, CardHeader, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { styled } from '@mui/system';
+import PersonIcon from '@mui/icons-material/Person';
+import HttpsIcon from '@mui/icons-material/Https';
+import image1 from '../../assets/logoOne.svg';
+import image2 from '../../assets/logoTwo.svg';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import FooterContainer from '../../sections/auth/FooterContainer';
+import LoginFooter from '../../sections/auth/LoginFooter';
+
+
+const LoginButton = styled(Button)(({ theme }) => ({
+  backgroundColor: 'green',
+  width: '100%', // Set the width to 100% to match the form fields
+}));
 
 const LoginPage: React.FC = () => {
-    const navigate = useNavigate();
-    const loginMutation = useLoginMutation();
+  const [showPassword, setShowPassword] = useState(false);
+  const cardStyle = {
+    marginRight: '38px', // Add space between the cards
+  };
+  // Handle form submission
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Add your login logic here
+  };
 
-    const [method, setMethod] = useState<'email' | 'phoneNumber'>('email');
+  const containerStyle = {
+    paddingTop: '20px', // Adjust the padding as needed
+  };
+  const [selectedButton, setSelectedButton] = useState('login');
+  return (
+    <Container maxWidth="lg" style={containerStyle}>
+      <Grid container spacing={2}>
+        {/* Top Section: SVG Images */}
+        <Grid item xs={12} sm={7} style={{ textAlign: 'left' }}>
+          <img src={image1} alt="Image 1" />
+          <img src={image2} alt="Image 2" />
+        </Grid>
 
-    const formik = useFormik({
-        initialValues: {
-            email: 'admin@siin.shop',
-            password: '$iin*911',
-            submit: null
-        },
-        validationSchema: Yup.object({
-            email: Yup
-                .string()
-                .email('Must be a valid email')
-                .max(255)
-                .required('Email is required'),
-            password: Yup
-                .string()
-                .max(255)
-                .required('Password is required')
-        }),
-        onSubmit: async (values, helpers) => {
-            try {
-                await loginMutation.mutateAsync(values);
-                navigate('/');
-            } catch (err) {
-                helpers.setStatus({ success: false });
-                helpers.setErrors({ submit: (err as Error).message });
-                helpers.setSubmitting(false);
-            }
-        }
-    });
+        <Grid item xs={12} sm={1}>
+        </Grid>
 
-    const handleMethodChange = useCallback(
-        (event: React.ChangeEvent<{}>, value: 'email' | 'phoneNumber') => {
-            setMethod(value);
-        },
-        []
-    );
+        {/* Right Section: Login Form */}
+        <Grid item xs={12} sm={4}>
+          <Paper elevation={3} style={{ padding: '20px' }}>
+            <Typography variant="h6" color="#002F6C">CLMS - এ স্বাগতম</Typography>
+            <ToggleButtonGroup
+              value={selectedButton}
+              exclusive
+              onChange={(e, newValue) => setSelectedButton(newValue)}
+              aria-label="login or signup"
 
-    return (
-        <>
-            <Box
-                sx={{
-                    backgroundColor: 'background.paper',
-                    flex: '1 1 auto',
-                    alignItems: 'center',
-                    display: 'flex',
-                    justifyContent: 'center'
-                }}
             >
-                <Box
-                    sx={{
-                        maxWidth: 550,
-                        px: 3,
-                        py: '100px',
-                        width: '100%'
-                    }}
-                >
-                    <div>
-                        <Stack
-                            spacing={1}
-                            sx={{ mb: 3 }}
-                        >
-                            <Typography variant="h4">
-                                Login
-                            </Typography>
-                        </Stack>
-                        {method === 'email' && (
-                            <form
-                                noValidate
-                                onSubmit={formik.handleSubmit}
-                            >
-                                <Stack spacing={3}>
-                                    <TextField
-                                        error={Boolean(formik.touched.email && formik.errors.email)}
-                                        fullWidth
-                                        helperText={formik.touched.email && formik.errors.email}
-                                        label="Email Address"
-                                        name="email"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="email"
-                                        value={formik.values.email}
-                                    />
-                                    <TextField
-                                        error={Boolean(formik.touched.password && formik.errors.password)}
-                                        fullWidth
-                                        helperText={formik.touched.password && formik.errors.password}
-                                        label="Password"
-                                        name="password"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        type="password"
-                                        value={formik.values.password}
-                                    />
-                                </Stack>
-                                {formik.errors.submit && (
-                                    <Typography
-                                        color="error"
-                                        sx={{ mt: 3 }}
-                                        variant="body2"
-                                    >
-                                        {formik.errors.submit}
-                                    </Typography>
-                                )}
-                                <Button
-                                    fullWidth
-                                    size="large"
-                                    sx={{ mt: 3 }}
-                                    type="submit"
-                                    variant="contained"
-                                >
-                                    Continue
-                                </Button>
-                            </form>
-                        )}
-                        {method === 'phoneNumber' && (
-                            <div>
-                                <Typography
-                                    sx={{ mb: 1 }}
-                                    variant="h6"
-                                >
-                                    Currently Not available
-                                </Typography>
-                                <Typography color="text.secondary">
-                                    This feature will be available in the future.
-                                </Typography>
-                            </div>
-                        )}
-                    </div>
-                </Box>
-            </Box>
-        </>
-    );
+              <ToggleButton value="login" fullWidth={true}>Login</ToggleButton>
+              <ToggleButton value="signup" fullWidth={true}>Signup</ToggleButton>
+            </ToggleButtonGroup>
+            <form onSubmit={handleLogin}>
+              <TextField
+                placeholder="Email"
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PersonIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                placeholder="Password"
+                type={showPassword ? 'text' : 'password'}
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <HttpsIcon />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {showPassword ? (
+                        <VisibilityOffIcon
+                          onClick={() => setShowPassword(false)}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      ) : (
+                        <RemoveRedEyeIcon
+                          onClick={() => setShowPassword(true)}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <FormControlLabel
+                  control={<Checkbox color="primary" />}
+                  label={
+                    <Box component="div" fontSize={11}>
+                      পরবর্তী ব্যবহারের জনে রাখুন
+                    </Box>
+                  }
+                />
+                <Typography variant="body2" style={{ marginLeft: 'auto' }}>
+                  <a href="#">Forgot Password?</a>
+                </Typography>
+              </div>
+              <LoginButton variant="contained" color="primary" type="submit">
+                Login
+              </LoginButton>
+            </form>
+          </Paper>
+        </Grid>
+
+        {/* New Section: 5 Cards */}
+        <Grid item xs={12}>
+          <FooterContainer></FooterContainer>
+        </Grid>
+
+        {/* Bottom Section: Text */}
+        <Grid item xs={12}>
+          <LoginFooter></LoginFooter>
+        </Grid>
+      </Grid>
+    </Container>
+  );
 };
 
 export default LoginPage;
